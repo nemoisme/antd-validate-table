@@ -16,8 +16,24 @@ const devPlugins = [
   })
 ]
 
+
+const libExternals = {
+  react: {
+    commonjs: 'react',
+    commonjs2: 'react',
+    amd: 'react',
+    root: 'React',
+  },
+  'react-dom': {
+    commonjs: 'react-dom',
+    commonjs2: 'react-dom',
+    amd: 'react-dom',
+    root: 'ReactDOM',
+  },
+}
+
 module.exports = {
-  mode:env,
+  mode: env,
   // 输入
   entry: isPrd ? join('./packages/index.tsx') : join('./examples/main.tsx'),
   //输出
@@ -29,13 +45,16 @@ module.exports = {
     libraryExport: 'default',
     umdNamedDefine: true
   },
+  optimization: {
+    usedExports:true
+  },
   module: {
     rules: [
       {
         test: /\.(j|t)sx?$/,
         use: ['babel-loader', 'ts-loader'],
         exclude: /node_modules/,
-        include: [join('./packages'),join('./examples')]
+        include: [join('./packages'), join('./examples')]
       },
       {
         test: /\.css$/,
@@ -55,20 +74,8 @@ module.exports = {
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx']
   },
-  externals: { // 为了解决多个react 实例的问题 打包有待解决实例冲突
-    // react: {
-    //   commonjs: 'react',
-    //   commonjs2: 'react',
-    //   amd: 'react',
-    //   root: 'React',
-    // },
-    // 'react-dom': {
-    //   commonjs: 'react-dom',
-    //   commonjs2: 'react-dom',
-    //   amd: 'react-dom',
-    //   root: 'ReactDOM',
-    // },
-  },
+  // 为了解决多个react 实例的问题 打包产生多个实例 有待解决实例冲突  暂时用这种方式解决
+  externals:isPrd?libExternals:{},
   devServer: {
     host: 'localhost',
     port: 3000,

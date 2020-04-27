@@ -1,8 +1,8 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
 import { Table, Input, Button, Popconfirm, Form, Select, Radio, Checkbox } from 'antd';
-import AntdValidateTable from '../packages/index'
+// import AntdValidateTable from '../packages/index'
 
-// import AntdValidateTable from './../lib/antd-validate-table'
+import AntdValidateTable from './../lib/AntdValidateTable'
 
 export default class Demo extends React.Component<any, any> {
   constructor(props: any) {
