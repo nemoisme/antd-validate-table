@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
-import { Table, Input, Button, Popconfirm, Form, Select, } from 'antd';
+import { Table, Input, Button, Popconfirm, Form, Select, Radio,Checkbox } from 'antd';
 import AntdValidateTable from '../packages/index'
 
 // import AntdValidateTable from './../lib/antd-validate-table'
@@ -29,7 +29,7 @@ export default class Demo extends React.Component<any, any> {
           dataIndex: 'age',
           config: (index) => ({
             component: Select,
-            option: [
+            options: [
               {
                 label: '下拉1',
                 value: 1
@@ -48,6 +48,19 @@ export default class Demo extends React.Component<any, any> {
         {
           title: 'cus',
           dataIndex: 'cus',
+          config: index => ({
+            component: Radio,
+            options: [
+              {
+                label: '单选1',
+                value: 1
+              },
+              {
+                label: '单选2',
+                value: 2
+              }
+            ]
+          })
         },
         {
           title: "mutil",
@@ -55,7 +68,20 @@ export default class Demo extends React.Component<any, any> {
           children: [
             {
               title: 'mutilA',
-              dataIndex: 'mutilA'
+              dataIndex: 'mutilA',
+              config:index=>({
+                component:Checkbox.Group,
+                options:[
+                  {
+                    label:'多选1',
+                    value:1,
+                  },
+                  {
+                    label:'多选2',
+                    value:2
+                  }
+                ]
+              })
             },
             {
               title: 'mutilB',
