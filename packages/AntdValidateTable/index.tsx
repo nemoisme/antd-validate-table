@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import { Table, Form } from 'antd';
 
 import { EditableColumn, EleParmas, optionItem, ComponentProps, renderOps } from './type'
@@ -12,10 +12,10 @@ const RENDER_MAP = {
 
 // }
 
-const RenderEle = ({ text, dataIndex, col, record }: EleParmas) => {
+const RenderEle = ({ text, rowIndex, col, record }: EleParmas) => {
   const [val, setVal] = useState(text)
   // debugger
-  const { component, options } = typeof col.config == 'function' && col.config(dataIndex, record)
+  const { component, options } = typeof col.config == 'function' && col.config(rowIndex, record)
   const { constructor: { name } } = typeof component == 'function' && component.prototype
   return component ? React.createElement(
     name == 'Radio' ? component[RENDER_MAP[name]] : component,
@@ -23,7 +23,8 @@ const RenderEle = ({ text, dataIndex, col, record }: EleParmas) => {
       options,
       value: val,
       onChange: e => {
-        setVal(e.target.value)
+        const real: any = (name == 'CheckboxGroup' ? e : e.target.value)
+        setVal(real)
       },
     }, options && name !== 'CheckboxGroup' && Array.isArray(options) && options.map(op =>
       React.createElement(  // 有待拆解
@@ -35,16 +36,16 @@ const RenderEle = ({ text, dataIndex, col, record }: EleParmas) => {
 }
 
 
-const renderCell = (text, record, dataIndex, col): React.ReactNode => {
-  const { rules } = typeof col.config == 'function' && col.config(dataIndex, record)
+const renderCell = (text, record, rowIndex, col): React.ReactNode => {
+  const { rules } = typeof col.config == 'function' && col.config(rowIndex, record)
   return (
     col.render ? col.render :
       <Form.Item
         style={{ margin: 0 }}
-        name={col.dataIndex}
+        name={col.rowIndex}
         rules={rules}
       >
-        {RenderEle({ text, dataIndex, col, record })}
+        {RenderEle({ text, rowIndex, col, record })}
       </Form.Item>)
 }
 
@@ -52,7 +53,7 @@ const renderCell = (text, record, dataIndex, col): React.ReactNode => {
 const multilColumns = (columns: Array<EditableColumn>): Array<EditableColumn> => {
   return columns.map((col) => ({
     ...col,
-    render: (text, record, dataIndex) => renderCell(text, record, dataIndex, col),
+    render: (text, record, rowIndex) => renderCell(text, record, rowIndex, col),
     children: col.children && multilColumns(col.children)
   }));
 }

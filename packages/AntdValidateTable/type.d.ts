@@ -14,7 +14,7 @@ export interface EditableColumn<T = any> extends ColumnProps<T> {
 export interface EleParmas {
   text: string,
   col?: EditableColumn,
-  dataIndex: string,
+  rowIndex: string|number,
   record?: any
 }
 
