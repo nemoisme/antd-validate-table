@@ -1,5 +1,6 @@
 ## AntdValidateTable介绍
-  > 基于antd封装的table单元格校验ui插件
+  > 1.基于antd封装的table单元格校验ui插件                                   
+  > 2.ts+hooks实现
 
 ```sh
 yarn add antd-validate-table or npm i antd-validate-table
