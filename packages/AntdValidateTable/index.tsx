@@ -8,6 +8,8 @@ const RENDER_MAP = {
   Radio: 'Group'
 }
 
+const VAL_TYPES: Array<string> = ['Select', 'CheckboxGroup']
+
 // const renderOptions(options: Array<optionItem>) => {
 
 // }
@@ -23,7 +25,7 @@ const RenderEle = ({ text, rowIndex, col, record }: EleParmas) => {
       options,
       value: val,
       onChange: e => {
-        const real: any = (name == 'CheckboxGroup' ? e : e.target.value)
+        const real: any = (VAL_TYPES.includes(name) ? e : e.target.value)
         setVal(real)
       },
     }, options && name !== 'CheckboxGroup' && Array.isArray(options) && options.map(op =>
