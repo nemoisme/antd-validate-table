@@ -109,6 +109,6 @@ export default class Demo extends React.Component<any, any> {
   }
   render() {
     const { dataSource, columns } = this.state
-    return <div><AntdValidateTable dataSource={dataSource} columns={columns} /></div>
+    return <AntdValidateTable dataSource={dataSource} columns={columns} />
   }
 }
