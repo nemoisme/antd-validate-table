@@ -16,7 +16,7 @@ yarn add antd-validate-table or npm i antd-validate-table
 
 ### 待换成
   1.组件HOC化                                
-  2.基于el-validate-table功能迁移及改造 
+  2.基于el-validate-table功能迁移及改造                                    
   3.打包体积优化【2M->1M->904kb】 target:200kb左右                                                       
   4.表单数据联动（ps:包括初始化数据）                            
 
