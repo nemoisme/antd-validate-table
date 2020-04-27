@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
-import { Table, Input, Button, Popconfirm, Form, Select, Radio,Checkbox } from 'antd';
+import { Table, Input, Button, Popconfirm, Form, Select, Radio, Checkbox } from 'antd';
 import AntdValidateTable from '../packages/index'
 
 // import AntdValidateTable from './../lib/antd-validate-table'
@@ -15,7 +15,7 @@ export default class Demo extends React.Component<any, any> {
           width: '30%',
           editable: true,
           config: (index, a) => {
-            return  {
+            return {
               component: Input,
               rules: [{
                 required: true,
@@ -32,7 +32,7 @@ export default class Demo extends React.Component<any, any> {
             options: [
               {
                 label: '下拉1',
-                value: 1
+                value: '32'
               },
               {
                 label: '下拉2',
@@ -69,17 +69,29 @@ export default class Demo extends React.Component<any, any> {
             {
               title: 'mutilA',
               dataIndex: 'mutilA',
-              config:index=>({
-                component:Checkbox.Group,
-                options:[
+              config: index => ({
+                component: Checkbox.Group,
+                options: [
                   {
-                    label:'多选1',
-                    value:1,
+                    label: '多选1',
+                    value: 1,
                   },
                   {
-                    label:'多选2',
-                    value:2
+                    label: '多选2',
+                    value: 2
                   }
+                ],
+                rules: [
+                  ({ getFieldValue }) => ({
+                    validator(rule, value) {
+                      debugger
+                      if (!value || getFieldValue('password') === value) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject('The two passwords that you entered do not match!');
+                    },
+                    trigger: 'change'
+                  })
                 ]
               })
             },
@@ -96,14 +108,14 @@ export default class Demo extends React.Component<any, any> {
           name: 'Edward King 0',
           age: '32',
           address: 'London, Park Lane no. 0',
-          mutilA:[1,2]
+          mutilA: [1, 2]
         },
         {
           key: '1',
           name: 'Edward King 1',
           age: '32',
           address: 'London, Park Lane no. 1',
-          mutilA:[1]
+          mutilA: [1]
         },
       ],
       count: 2,

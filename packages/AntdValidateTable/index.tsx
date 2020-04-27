@@ -44,8 +44,8 @@ const renderCell = (text, record, rowIndex, col): React.ReactNode => {
     col.render ? col.render :
       <Form.Item
         style={{ margin: 0 }}
-        name={col.rowIndex}
-        rules={rules}
+        // name={rowIndex+col.dataIndex}
+        rules={rules || []}
       >
         {RenderEle({ text, rowIndex, col, record })}
       </Form.Item>)
