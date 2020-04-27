@@ -1,0 +1,42 @@
+{
+  "name": "antd-validate-table",
+  "version": "1.0.0",
+  "description": "a lib about validate-table base on antd",
+  "main": "index.js",
+  "author": "nemoisme<nemo_ambitoner@163.com>",
+  "license": "MIT",
+  "private": false,
+  "keywords": [
+    "react",
+    "antd",
+    "typescript"
+  ],
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development webpack-dev-server  --progress --colors",
+    "lib": "cross-env NODE_ENV=production webpack  --progress --colors"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
+    "@babel/preset-react": "^7.9.4",
+    "@types/react": "^16.9.34",
+    "@types/react-dom": "^16.9.6",
+    "babel-loader": "^8.1.0",
+    "babel-plugin-import": "^1.13.0",
+    "cross-env": "^7.0.2",
+    "css-loader": "^3.5.3",
+    "html-webpack-plugin": "^4.2.0",
+    "source-map-loader": "^0.2.4",
+    "style-loader": "^1.2.0",
+    "ts-loader": "^7.0.1",
+    "typescript": "^3.8.3",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
+  },
+  "dependencies": {
+    "antd": "^4.1.5",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  }
+}
