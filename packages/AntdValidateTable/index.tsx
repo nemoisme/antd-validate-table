@@ -3,10 +3,11 @@ import { Table, Form } from 'antd';
 
 import { EditableColumn, EleParmas, optionItem, ComponentProps, renderOps } from './type'
 
-const RENDER_MAP = {
+const RENDER_MAP: object = {
   Select: 'Option',
   Radio: 'Group'
 }
+
 
 const VAL_TYPES: Array<string> = ['Select', 'CheckboxGroup']
 
@@ -14,7 +15,7 @@ const VAL_TYPES: Array<string> = ['Select', 'CheckboxGroup']
 
 // }
 
-const RenderEle = ({ text, rowIndex, col, record }: EleParmas) => {
+const RenderEle = ({ text, rowIndex, col, record }: EleParmas): React.ReactNode => {
   const [val, setVal] = useState(text)
   // debugger
   const { component, options } = typeof col.config == 'function' && col.config(rowIndex, record)
@@ -34,11 +35,11 @@ const RenderEle = ({ text, rowIndex, col, record }: EleParmas) => {
         { ...op, key: op.value },
         op.label
       )
-    )) : val
+      )) :val
 }
 
 
-const renderCell = (text, record, rowIndex, col): React.ReactNode => {
+const renderCell = ({text, record, rowIndex, col}:EleParmas): React.ReactNode => {
   const { rules } = typeof col.config == 'function' && col.config(rowIndex, record)
   return (
     col.render ? col.render :
@@ -55,12 +56,13 @@ const renderCell = (text, record, rowIndex, col): React.ReactNode => {
 const multilColumns = (columns: Array<EditableColumn>): Array<EditableColumn> => {
   return columns.map((col) => ({
     ...col,
-    render: (text, record, rowIndex) => renderCell(text, record, rowIndex, col),
+    render: (text, record, rowIndex) => renderCell({text, record, rowIndex, col}),
     children: col.children && multilColumns(col.children)
   }));
 }
 
-class AntdValidateTable extends Component<ComponentProps, any> {
+
+class AntdValidateTable extends Component<ComponentProps, {}> {
   constructor(props: ComponentProps) {
     super(props);
   }
@@ -78,4 +80,6 @@ class AntdValidateTable extends Component<ComponentProps, any> {
   }
 }
 
+
+// export default Form.create<ComponentProps>()(AntdValidateTable)  // 存在类型错误 有待解决4
 export default AntdValidateTable
