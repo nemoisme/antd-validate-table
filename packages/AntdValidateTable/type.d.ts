@@ -1,7 +1,6 @@
 import { ColumnProps } from 'antd/lib/table';
 import React from 'react'
-
-
+import { FormProps } from 'antd/lib/form'
 export interface EditableColumn<T = any> extends ColumnProps<T> {
   type?: string;
   rule?: object[];
@@ -12,7 +11,7 @@ export interface EditableColumn<T = any> extends ColumnProps<T> {
 }
 
 export interface EleParmas {
-  text: string,
+  val: string,
   col?: EditableColumn,
   rowIndex: string | number,
   record?: any
@@ -24,11 +23,14 @@ export interface optionItem {
 }
 
 
-export interface ComponentProps extends FormComponentProps<> {
+export interface IProps extends FormProps {
   dataSource: Array<object>,
-  columns: Array<EditableColumn>
+  columns: Array<EditableColumn>,
+  ref: any,
+  form?:any
+
 }
 
 export interface renderOps {
-  compontent
+  compontent: any
 }

@@ -1,128 +1,86 @@
-import React, { useContext, useState, useEffect, useRef } from 'react';
-import { Table, Input, Button, Popconfirm, Form, Select, Radio, Checkbox } from 'antd';
-import AntdValidateTable from '../packages/index'
+import React, { Component ,useState} from 'react'
+import AntdValidateTable from './../packages/index'
+import { Input,Checkbox, Button ,Form} from 'antd'
 
-// import AntdValidateTable from './../lib/AntdValidateTable'
 
-export default class Demo extends React.Component<any, any> {
+const CustomInputWithCheck = (props: any) => {
+  const { value, onChange } = props
+  const [checkVal, setCheckVal] = useState(value||'')
+  return <>
+    <Checkbox checked={checkVal} onChange={e => {
+      setCheckVal(e.target.checked)
+      onChange(e.target.checked )
+    }} style={{ marginLeft: 10 }}>需要跟读</Checkbox>
+  </>
+}
+
+
+export default class Demo extends Component<any, any> {
+  validateTable = React.createRef()
+  form:any
   constructor(props: any) {
     super(props)
+    this.form = null
     this.state = {
+      dataSource: [{ a: 1, b: 2, c: 3 ,cus:true},{ a: 2, b: 3, c: 4 ,cus:false}],
       columns: [
         {
-          title: 'name',
-          dataIndex: 'name',
-          width: '30%',
-          editable: true,
-          config: (index, a) => {
-            return {
-              component: Input,
-              rules: [{
+          dataIndex: 'a',
+          title: '字段a',
+          config: () => ({
+            component: Input,
+            rules: [
+              {
                 required: true,
                 message: '不能为空'
-              }]
-            }
-          }
+              },
+
+            ]
+          })
         },
         {
-          title: 'age',
-          dataIndex: 'age',
-          config: (index) => ({
-            component: Select,
-            options: [
+          title:'自定义组件',
+          dataIndex:'cus',
+          config:()=>({
+            component:CustomInputWithCheck,
+            rules:[
               {
-                label: '下拉1',
-                value: '32'
-              },
-              {
-                label: '下拉2',
-                value: 2
+                validator: (rules, value, callback) => {
+                   if(!value){
+                     callback('请选择')
+                   }
+                   callback()
+                }
               }
             ]
           })
         },
         {
-          title: 'address',
-          dataIndex: 'address',
-        },
-        {
-          title: 'cus',
-          dataIndex: 'cus',
-          config: index => ({
-            component: Radio,
-            options: [
-              {
-                label: '单选1',
-                value: 1
-              },
-              {
-                label: '单选2',
-                value: 2
-              }
-            ]
-          })
-        },
-        {
-          title: "mutil",
-          dataIndex: 'mutil',
-          children: [
-            {
-              title: 'mutilA',
-              dataIndex: 'mutilA',
-              config: index => ({
-                component: Checkbox.Group,
-                options: [
-                  {
-                    label: '多选1',
-                    value: 1,
-                  },
-                  {
-                    label: '多选2',
-                    value: 2
-                  }
-                ],
-                rules: [
-                  ({ getFieldValue }) => ({
-                    validator(rule, value) {
-                      debugger
-                      if (!value || getFieldValue('password') === value) {
-                        return Promise.resolve();
-                      }
-                      return Promise.reject('The two passwords that you entered do not match!');
-                    },
-                    trigger: 'change'
-                  })
-                ]
-              })
-            },
-            {
-              title: 'mutilB',
-              dataIndex: 'mutilB'
-            }
-          ]
+          title: '字段b',
+          dataIndex: 'b'
         }
-      ],
-      dataSource: [
-        {
-          key: '0',
-          name: 'Edward King 0',
-          age: '32',
-          address: 'London, Park Lane no. 0',
-          mutilA: [1, 2]
-        },
-        {
-          key: '1',
-          name: 'Edward King 1',
-          age: '32',
-          address: 'London, Park Lane no. 1',
-          mutilA: [1]
-        },
-      ],
-      count: 2,
+      ]
     }
   }
+
+  getForm = async()=>{
+    const {validateFields,getFieldsValue} = this.form
+    const form = getFieldsValue()
+    const res = await validateFields()
+    if(!res) return 
+    debugger
+  }
+
+  validate = ()=>{
+
+  }
+
   render() {
     const { dataSource, columns } = this.state
-    return <AntdValidateTable dataSource={dataSource} columns={columns} />
+    return <div>
+      <h3>-test</h3>
+      <AntdValidateTable form={form=>this.form=form} onFinish={this.getForm}  ref={this.validateTable} dataSource={dataSource} columns={columns}></AntdValidateTable>
+      <Button type="primary" onClick={()=>this.getForm()} >获取表单值</Button>
+    </div>
   }
 }

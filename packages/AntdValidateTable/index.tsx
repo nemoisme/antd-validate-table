@@ -1,7 +1,7 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { Component, useState, useEffect,FC } from 'react';
 import { Table, Form } from 'antd';
 
-import { EditableColumn, EleParmas, optionItem, ComponentProps, renderOps } from './type'
+import { EditableColumn, EleParmas, optionItem, IProps, renderOps } from './type'
 
 const RENDER_MAP: object = {
   Select: 'Option',
@@ -11,26 +11,20 @@ const RENDER_MAP: object = {
 
 const VAL_TYPES: Array<string> = ['Select', 'CheckboxGroup']
 
-// const renderOptions(options: Array<optionItem>) => {
 
-// }
+const h = React.createElement
 
-const RenderEle = ({ text, rowIndex, col, record }: EleParmas): React.ReactNode => {
-  const [val, setVal] = useState(text)
-  // debugger
+
+const RenderEle = ({ val, rowIndex, col, record }: EleParmas): React.ReactNode => {
   const { component, options } = typeof col.config == 'function' && col.config(rowIndex, record)
   const { constructor: { name } } = typeof component == 'function' && component.prototype
-  return component ? React.createElement(
+  return component ? h(
     name == 'Radio' ? component[RENDER_MAP[name]] : component,
     {
       options,
       value: val,
-      onChange: e => {
-        const real: any = (VAL_TYPES.includes(name) ? e : e.target.value)
-        setVal(real)
-      },
     }, options && name !== 'CheckboxGroup' && Array.isArray(options) && options.map(op =>
-      React.createElement(  // 有待拆解
+      h(  // 有待拆解
         name == 'Radio' ? component : component[RENDER_MAP[name]],
         { ...op, key: op.value },
         op.label
@@ -38,17 +32,16 @@ const RenderEle = ({ text, rowIndex, col, record }: EleParmas): React.ReactNode 
       )) :val
 }
 
-
-const renderCell = ({text, record, rowIndex, col}:EleParmas): React.ReactNode => {
+const renderCell = ({val, record, rowIndex, col}:EleParmas): React.ReactNode => {
   const { rules } = typeof col.config == 'function' && col.config(rowIndex, record)
   return (
     col.render ? col.render :
       <Form.Item
         style={{ margin: 0 }}
-        // name={rowIndex+col.dataIndex}
+        name={`${rowIndex}.${col.dataIndex}`}
         rules={rules || []}
       >
-        {RenderEle({ text, rowIndex, col, record })}
+        {RenderEle({ val, rowIndex, col, record })}
       </Form.Item>)
 }
 
@@ -56,30 +49,37 @@ const renderCell = ({text, record, rowIndex, col}:EleParmas): React.ReactNode =>
 const multilColumns = (columns: Array<EditableColumn>): Array<EditableColumn> => {
   return columns.map((col) => ({
     ...col,
-    render: (text, record, rowIndex) => renderCell({text, record, rowIndex, col}),
+    render: (val, record, rowIndex) => renderCell({val, record, rowIndex, col}),
     children: col.children && multilColumns(col.children)
-  }));
+  }))
 }
 
 
-class AntdValidateTable extends Component<ComponentProps, {}> {
-  constructor(props: ComponentProps) {
-    super(props);
-  }
-  render() {
-    const { dataSource, columns } = this.props;
+const  AntdValidateTable =(props:IProps)=> {
+    const { dataSource, columns } = props
+    const [form] = Form.useForm()
+
+    props.form(form)
+
+    const formInit  = dataSource.reduce((cur,next,index)=>{
+      const rowItem = Object.keys(next).reduce((row,key)=>{
+        row[`${index}.${key}`] = next[key]
+        return row
+      },{})
+      cur = {...cur,...rowItem}
+      return cur
+    },{})
+
     return (
-      <Form>
+      <Form 
+        form={form}
+        initialValues={formInit}>
         <Table
-          bordered
           dataSource={dataSource}
           columns={multilColumns(columns)}
         />
       </Form>
     );
-  }
 }
 
-
-// export default Form.create<ComponentProps>()(AntdValidateTable)  // 存在类型错误 有待解决4
 export default AntdValidateTable
