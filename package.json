@@ -1,6 +1,6 @@
 {
   "name": "antd-validate-table",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "a lib about validate-table base on antd",
   "main": "index.js",
   "author": "nemoisme<nemo_ambitoner@163.com>",
