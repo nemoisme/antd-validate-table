@@ -7,12 +7,12 @@ export interface EditableColumn<T = any> extends ColumnProps<T> {
   component?: any,
   config?: any,
   render?: any,
-  children: Array<EditableColumn>
+  children: Array<any>
 }
 
 export interface EleParmas {
   val: string,
-  col?: EditableColumn,
+  col?: any,
   rowIndex: string | number,
   record?: any
 }
@@ -25,7 +25,7 @@ export interface optionItem {
 
 export interface IProps extends FormProps {
   dataSource: Array<object>,
-  columns: Array<EditableColumn>,
+  columns: Array<any>,
   ref: any,
   form?:any
 

@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect,FC } from 'react';
+import React, { Component, useState,FC ,useImperativeHandle,useCallback,forwardRef} from 'react';
 import { Table, Form } from 'antd';
 
 import { EditableColumn, EleParmas, optionItem, IProps, renderOps } from './type'
@@ -46,7 +46,7 @@ const renderCell = ({val, record, rowIndex, col}:EleParmas): React.ReactNode => 
 }
 
 
-const multilColumns = (columns: Array<EditableColumn>): Array<EditableColumn> => {
+const multilColumns = (columns: Array<any>): Array<any> => {
   return columns.map((col) => ({
     ...col,
     render: (val, record, rowIndex) => renderCell({val, record, rowIndex, col}),
@@ -55,11 +55,18 @@ const multilColumns = (columns: Array<EditableColumn>): Array<EditableColumn> =>
 }
 
 
-const  AntdValidateTable =(props:IProps)=> {
+const  AntdValidateTable =(props:IProps,ref)=> {
     const { dataSource, columns } = props
     const [form] = Form.useForm()
 
-    props.form(form)
+    // const  getTableList = useCallback(()=>{
+    //   console.log(dataSource,'dataSource')
+    // },[props])
+
+    useImperativeHandle(ref,()=>({
+      ...form,
+      // getTableList
+    }),[form])
 
     const formInit  = dataSource.reduce((cur,next,index)=>{
       const rowItem = Object.keys(next).reduce((row,key)=>{
@@ -82,4 +89,4 @@ const  AntdValidateTable =(props:IProps)=> {
     );
 }
 
-export default AntdValidateTable
+export default  forwardRef(AntdValidateTable) 
