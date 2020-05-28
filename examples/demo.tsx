@@ -1,5 +1,5 @@
 import React, { Component, useState, useRef } from 'react'
-import AntdValidateTable from './../lib/AntdValidateTable'
+import AntdValidateTable from './../packages/index'
 import { Input, Checkbox, Button, Form } from 'antd'
 
 
@@ -129,15 +129,24 @@ const Demo = (props: any) => {
   ]
   const vaidateRefs = useRef({})
 
+
+  const [data,setData] = useState(dataSource)
+
   const getForm = () => {
     const { current: { getFieldValue, getTableVal, formValue } }: any = vaidateRefs
     const value = formValue()
     debugger
   }
+
+  const handAdd  = ()=>{
+    setData(data.concat({a:1,b:2,c:3,cus:true}))
+  }
+
   return <>
     <h2>dmeo</h2>
-    <AntdValidateTable ref={vaidateRefs} dataSource={dataSource} columns={columns} />
+    <AntdValidateTable ref={vaidateRefs} dataSource={data} columns={columns} />
     <Button onClick={() => getForm()}>获取表单</Button>
+    <Button onClick={() => handAdd()}>增加一行</Button>
   </>
 
 }

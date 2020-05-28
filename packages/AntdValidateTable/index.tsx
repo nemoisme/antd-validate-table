@@ -1,5 +1,6 @@
-import React, { useState, useImperativeHandle, useCallback, forwardRef } from 'react';
-import {Table,Form} from 'antd'
+import React, { useState, useImperativeHandle, useCallback, forwardRef, useEffect } from 'react';
+import Table from 'antd/lib/table'
+import Form from 'antd/lib/form'
 import set from 'lodash.set'
 import { EditableColumn, EleParmas, optionItem, IProps, renderOps } from './type'
 
@@ -66,19 +67,25 @@ const formateInit = (data: any[]) => {
 
 
 const AntdValidateTable = (props: IProps, ref): JSX.Element => {
-  const { dataSource, columns,formAttrs,tableAttrs } = props
+  const { dataSource, columns, formAttrs, tableAttrs } = props
   const [form] = Form.useForm()
-
   const [tableList, setTableList] = useState(dataSource)
+  const [initForm, setInitForm] = useState(formateInit(dataSource))
 
-  const formValue = useCallback(() => tableList, [props])
+
+  useEffect(() => {
+    setTableList(dataSource)
+    setInitForm(formateInit(dataSource))
+  }, [dataSource])
+
+  const formValue = useCallback(() => tableList, [tableList])
+
 
   useImperativeHandle(ref, () => ({
     ...form,
     formValue
-  }), [form])
+  }), [tableList])
 
-  const formInit = formateInit(dataSource)
 
   const fieldChange = (field: any) => {
     const key = Object.keys(field)[0]
@@ -92,7 +99,7 @@ const AntdValidateTable = (props: IProps, ref): JSX.Element => {
       {...formAttrs}
       onValuesChange={fieldChange}
       form={form}
-      initialValues={formInit}>
+      initialValues={initForm}>
       <Table
         {...tableAttrs}
         dataSource={tableList}
