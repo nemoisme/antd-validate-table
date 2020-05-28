@@ -66,9 +66,8 @@ const formateInit = (data: any[]) => {
 }
 
 
-
 const AntdValidateTable = (props: IProps, ref): JSX.Element => {
-  const { dataSource, columns } = props
+  const { dataSource, columns,formAttrs,tableAttrs } = props
   const [form] = Form.useForm()
 
   const [tableList, setTableList] = useState(dataSource)
@@ -91,10 +90,12 @@ const AntdValidateTable = (props: IProps, ref): JSX.Element => {
 
   return (
     <Form
+      {...formAttrs}
       onValuesChange={fieldChange}
       form={form}
       initialValues={formInit}>
       <Table
+        {...tableAttrs}
         dataSource={tableList}
         columns={multilColumns(columns)}
       />
