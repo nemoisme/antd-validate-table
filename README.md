@@ -11,17 +11,16 @@ yarn add antd-validate-table or npm i antd-validate-table
   2.动态渲染实现方式                            
   3.配置项驱动渲染                                                           
   4.支持Input,Radio,Check表单单元格渲染和校验     
-  5.单元格渲染元胞状态隔离    
-  6.table到form到model转化 
-  7.表单数据联动,包括初始化数据
-  8.采用hooks实现ref获取实例方法                           
+  5.单元格渲染元胞状态隔离             
+  6.table到form到model转化                           
+  7.表单数据联动,包括初始化数据                        
+  8.采用hooks实现ref获取实例方法                                 
 
 
 ### 待换成
   1.组件HOC化                                
   2.基于el-validate-table功能迁移及改造                                    
-  3.打包体积优化【2M->1M->904kb->658kb】 target:200kb左右                                                       
-）                            
+  3.打包体积优化【2M->1M->904kb->658kb】 target:200kb左右                            
 
 ### CODE栗子
 
