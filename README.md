@@ -13,8 +13,8 @@ yarn add antd-validate-table or npm i antd-validate-table
   4.支持Input,Radio,Check表单单元格渲染和校验     
   5.单元格渲染元胞状态隔离    
   6.table到form到model转化 
-  7.表单数据联动（ps:包括初始化数据
-  8.采用hooks实现refs获取实例方法                           
+  7.表单数据联动,包括初始化数据
+  8.采用hooks实现ref获取实例方法                           
 
 
 ### 待换成
