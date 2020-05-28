@@ -28,8 +28,8 @@ export interface IProps extends FormProps,TableProps {
   dataSource: Array < object >,
   columns: Array < any >,
   ref: any,
-  formAttrs: FormProps
-  tableAttrs:TableProps
+  formAttrs?: FormProps
+  tableAttrs?:TableProps
 }
 
 export interface renderOps {
