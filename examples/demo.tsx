@@ -4,6 +4,7 @@ import { Input, Checkbox, Button, Form } from 'antd'
 
 
 const CustomInputWithCheck = (props: any) => {
+  // debugger
   const { value, onChange } = props
   const [checkVal, setCheckVal] = useState(value || '')
   return <>
@@ -140,7 +141,7 @@ const Demo = (props: any) => {
   }
 
   const handAdd  = ()=>{
-    setData(data.concat({a:1,b:2,c:3,cus:true}))
+    setData(data.concat({a:1212,b:2,c:3,cus:true}))
   }
 
   return <>

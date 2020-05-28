@@ -73,12 +73,21 @@ const AntdValidateTable = (props: IProps, ref): JSX.Element => {
   const [form] = Form.useForm()
   const [tableList, setTableList] = useState(dataSource)
   const [initForm, setInitForm] = useState(formateInit(dataSource))
-
+  const [tableColumns, setTableColumns] = useState(multilColumns(columns))
 
   useEffect(() => {
     setTableList(dataSource)
-    setInitForm(formateInit(dataSource))
   }, [dataSource])
+
+
+  useEffect(() => {
+    setInitForm(formateInit(tableList))
+  }, [tableList])
+
+  useEffect(()=>{
+    form.setFieldsValue(initForm)
+  },[initForm])
+
 
   const formValue = useCallback(() => tableList, [tableList])
 
@@ -96,6 +105,8 @@ const AntdValidateTable = (props: IProps, ref): JSX.Element => {
     setTableList(temp)
   }
 
+
+
   return (
     <Form
       {...formAttrs}
@@ -105,7 +116,7 @@ const AntdValidateTable = (props: IProps, ref): JSX.Element => {
       <Table
         {...tableAttrs}
         dataSource={tableList}
-        columns={multilColumns(columns)}
+        columns={tableColumns}
       />
     </Form>
   );
