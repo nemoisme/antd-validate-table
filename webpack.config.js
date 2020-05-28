@@ -30,6 +30,7 @@ const libExternals = {
     amd: 'react-dom',
     root: 'ReactDOM',
   },
+  'antd': 'antd'
 }
 
 module.exports = {

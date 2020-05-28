@@ -1,5 +1,5 @@
-import React, { Component, useState,useRef } from 'react'
-import AntdValidateTable from './../lib/AntdValidateTable'
+import React, { Component, useState, useRef } from 'react'
+import AntdValidateTable from './../packages/index'
 import { Input, Checkbox, Button, Form } from 'antd'
 
 
@@ -129,14 +129,15 @@ const Demo = (props: any) => {
   ]
   const vaidateRefs = useRef({})
 
-  const getForm=()=>{
-    const test:any = vaidateRefs
+  const getForm = () => {
+    const { current: { getFieldValue, getTableVal, formValue } }: any = vaidateRefs
+    const value = formValue()
     debugger
   }
   return <>
     <h2>dmeo</h2>
-    <AntdValidateTable ref={vaidateRefs} dataSource={dataSource} columns={columns}  />
-    <Button onClick={()=>getForm()}>获取表单</Button>
+    <AntdValidateTable ref={vaidateRefs} dataSource={dataSource} columns={columns} />
+    <Button onClick={() => getForm()}>获取表单</Button>
   </>
 
 }

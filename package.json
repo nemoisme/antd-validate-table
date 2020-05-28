@@ -9,8 +9,13 @@
   "keywords": [
     "react",
     "antd",
-    "typescript"
+    "typescript",
+    "antd-validate-table"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nemoisme/antd-validate-table"
+  },
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server  --progress --colors",
     "lib": "cross-env NODE_ENV=production webpack  --progress --colors"
@@ -36,6 +41,7 @@
   },
   "dependencies": {
     "antd": "^4.1.5",
+    "lodash.set": "^4.3.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   }

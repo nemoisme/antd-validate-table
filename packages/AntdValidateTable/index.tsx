@@ -1,21 +1,19 @@
-import React, { Component, useState, FC, useImperativeHandle, useCallback, forwardRef } from 'react';
-import { Table, Form } from 'antd';
-
+import React, { useState, useImperativeHandle, useCallback, forwardRef } from 'react';
+import Table from 'antd/lib/table'
+import Form from 'antd/lib/form'
+import set from 'lodash.set'
 import { EditableColumn, EleParmas, optionItem, IProps, renderOps } from './type'
+
 
 const RENDER_MAP: object = {
   Select: 'Option',
   Radio: 'Group'
 }
 
-
-const VAL_TYPES: Array<string> = ['Select', 'CheckboxGroup']
-
-
 const h = React.createElement
 
 
-const RenderEle = ({ val, rowIndex, col, record }: EleParmas): React.ReactNode => {
+const RenderEle = ({ val, rowIndex, col, record }: EleParmas): JSX.Element => {
   const { component, options, componentProps, componentChild } = typeof col.config == 'function' && col.config(rowIndex, record)
   const { constructor: { name } } = typeof component == 'function' && component.prototype
   return component ? h(
@@ -33,7 +31,7 @@ const RenderEle = ({ val, rowIndex, col, record }: EleParmas): React.ReactNode =
     )) : componentChild || val || null
 }
 
-const renderCell = ({ val, record, rowIndex, col }: EleParmas): React.ReactNode => {
+const renderCell = ({ val, record, rowIndex, col }: EleParmas): JSX.Element => {
   const { rules } = typeof col.config == 'function' && col.config(rowIndex, record)
   return (
     col.render ? col.render :
@@ -56,20 +54,8 @@ const multilColumns = (columns: Array<any>): Array<any> => {
 }
 
 
-const AntdValidateTable = (props: IProps, ref) => {
-  const { dataSource, columns } = props
-  const [form] = Form.useForm()
-
-  // const  getTableList = useCallback(()=>{
-  //   console.log(dataSource,'dataSource')
-  // },[props])
-
-  useImperativeHandle(ref, () => ({
-    ...form,
-    // getTableList
-  }), [form])
-
-  const formInit = dataSource.reduce((cur, next, index) => {
+const formateInit = (data: any[]) => {
+  return data.reduce((cur, next, index) => {
     const rowItem = Object.keys(next).reduce((row, key) => {
       row[`${index}.${key}`] = next[key]
       return row
@@ -77,13 +63,39 @@ const AntdValidateTable = (props: IProps, ref) => {
     cur = { ...cur, ...rowItem }
     return cur
   }, {})
+}
+
+
+
+const AntdValidateTable = (props: IProps, ref): JSX.Element => {
+  const { dataSource, columns } = props
+  const [form] = Form.useForm()
+
+  const [tableList, setTableList] = useState(dataSource)
+
+  const formValue = useCallback(() => tableList, [props])
+
+  useImperativeHandle(ref, () => ({
+    ...form,
+    formValue
+  }), [form])
+
+  const formInit = formateInit(dataSource)
+
+  const fieldChange = (field: any) => {
+    const key = Object.keys(field)[0]
+    const temp = [...tableList]
+    set(temp, key, field[key])
+    setTableList(temp)
+  }
 
   return (
     <Form
+      onValuesChange={fieldChange}
       form={form}
       initialValues={formInit}>
       <Table
-        dataSource={dataSource}
+        dataSource={tableList}
         columns={multilColumns(columns)}
       />
     </Form>
