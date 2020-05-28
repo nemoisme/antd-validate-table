@@ -124,7 +124,8 @@ const Demo = (props: any) => {
     },
     {
       title: '字段b',
-      dataIndex: 'b'
+      dataIndex: 'b',
+      render:(t:any,r:any,rIndex:number)=><span>customrender</span>
     }
   ]
   const vaidateRefs = useRef({})

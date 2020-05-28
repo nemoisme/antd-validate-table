@@ -34,7 +34,7 @@ const RenderEle = ({ val, rowIndex, col, record }: EleParmas): JSX.Element => {
 const renderCell = ({ val, record, rowIndex, col }: EleParmas): JSX.Element => {
   const { rules } = typeof col.config == 'function' && col.config(rowIndex, record)
   return (
-    col.render ? col.render :
+    col.render && typeof col.render == 'function' ? col.render(val, record, rowIndex) :
       <Form.Item
         style={{ margin: 0 }}
         name={`${rowIndex}.${col.dataIndex}`}
