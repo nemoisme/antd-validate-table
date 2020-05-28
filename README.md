@@ -11,14 +11,17 @@ yarn add antd-validate-table or npm i antd-validate-table
   2.动态渲染实现方式                            
   3.配置项驱动渲染                                                           
   4.支持Input,Radio,Check表单单元格渲染和校验     
-  5.单元格渲染元胞状态隔离                               
+  5.单元格渲染元胞状态隔离    
+  6.table到form到model转化 
+  7.表单数据联动（ps:包括初始化数据
+  8.采用hooks实现refs获取实例方法                           
 
 
 ### 待换成
   1.组件HOC化                                
   2.基于el-validate-table功能迁移及改造                                    
-  3.打包体积优化【2M->1M->904kb】 target:200kb左右                                                       
-  4.表单数据联动（ps:包括初始化数据）                            
+  3.打包体积优化【2M->1M->904kb->658kb】 target:200kb左右                                                       
+）                            
 
 ### CODE栗子
 
@@ -27,8 +30,10 @@ import React, { Component} from 'react';
 import { Table, Input, Button, Popconfirm, Form, Select, Radio,Checkbox } from 'antd';
 import AntdValidateTable from '../packages/index'
 export default class Demo extends Component<any, any> {
+  public validateRef:any
   constructor(props: any) {
     super(props)
+    this.validateRef = React.creatRef()
     this.state = {
       columns: [
         {
@@ -131,7 +136,7 @@ export default class Demo extends Component<any, any> {
   }
   render() {
     const { dataSource, columns } = this.state
-    return <AntdValidateTable dataSource={dataSource} columns={columns} />
+    return <AntdValidateTable ref={this.validateRef} dataSource={dataSource} columns={columns} />
   }
 }
 
@@ -141,6 +146,6 @@ export default class Demo extends Component<any, any> {
 
 
 ### END
-  I want to play ts and hooks in react
+期待相关功能完善,减少crud的痛苦😖
 
 
