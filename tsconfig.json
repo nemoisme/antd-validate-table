@@ -28,7 +28,11 @@
   },
   "include": [
     "examples",
-    "packages"
+    "packages",
+    "packages/index.d.ts"
+  ],
+  "files":[
+    "packages/index.d.ts"
   ],
   "exclude": [
     "node_modules"
