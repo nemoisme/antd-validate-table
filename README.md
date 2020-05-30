@@ -1,148 +1,89 @@
-## AntdValidateTable介绍
-  > 1.基于antd封装的table单元格校验ui插件                                   
-  > 2.ts+hooks实现
+[el-validate-table]]:https://github.com/nemoisme/el-validate-table
+
+## AntdValidateTable 介绍
+  基于antd实现的单元格校验的table组件
+
+
+### 安装使用
 
 ```sh
-yarn add antd-validate-table or npm i antd-validate-table
+  yarn add antd-validate-table or npm i antd-validate-table
 ```
 
-### 已经完成的
-  1.基本类型定义                              
-  2.动态渲染实现方式                            
-  3.配置项驱动渲染                                                           
-  4.支持Input,Radio,Check表单单元格渲染和校验     
-  5.单元格渲染元胞状态隔离             
-  6.table到form到model转化                           
-  7.表单数据联动,包括初始化数据                        
-  8.采用hooks实现ref获取实例方法                                 
+### 如何而来
+  1.由于之前中的技术栈(vue+element),封装一个el-validate-table[el-validate-table]
+  2.到新公司技术栈变成react,但是大体的业务需求还是存在的
+  3.由于项目比较陈旧，antd3x升级antd4x存在的一定的困难,之前基于antd3x也写过一版本实现,但是antd3x的form getFieldDecorator 这里就暂不吐槽了,所以成品也出现很多bug
+  4.然后就有了隔离antd版本自己发包的冲动
 
 
-### 待换成
-  1.组件HOC化                                
-  2.基于el-validate-table功能迁移及改造                                    
-  3.打包体积优化【2M->1M->904kb->658kb】 target:200kb左右                            
+### 思考
+  1.配置项驱动源自之前的ele版本,ele版本实现的，它都行
+  2.核心代码其实很少，总共的篇幅也就100多行，所以存在无限的可扩展，个人比较看好,在此不得不说一句,hooks真相  
+  3.打包体积真的很难均衡，我好难！
 
-### CODE栗子
+
+### 将要完成的（ps:先满足自己的业务场景，哈哈哈哈）
+  1.antd3x和antd4x存在样式冲突，所以目前只是引入的es lib style 作为默认样式 ,所以计划是移除内置默认样式
+  2.单元格渲染原子表单,目前只支持的Input,Select,RadioGroup,以及非组合表单组件,custom component,未来将兼容antd更多内置表单组件
+  3.类型系统存在一定缺失，这里也是要慢慢完成的 包括组件内部类型完善，以及模块类型完善
+  4.关于打包体积，啊啊啊啊 基于antd版本的样式冲突，体积已经反弹了，这里让我不禁想起我的体重来了,体积还要减减减！💪
+  5.相关的api文档完善
+  6.最后：即使依然存在这么多要完成的，你依然可以使用，就是这么强（膨胀600斤，哈哈哈）
+                        
+### CODE 🌰
 
 ```tsx
-import React, { Component} from 'react';
-import { Table, Input, Button, Popconfirm, Form, Select, Radio,Checkbox } from 'antd';
-import AntdValidateTable from '../packages/index'
-export default class Demo extends Component<any, any> {
-  public validateRef:any
-  constructor(props: any) {
-    super(props)
-    this.validateRef = React.creatRef()
-    this.state = {
-      columns: [
-        {
-          title: 'name',
-          dataIndex: 'name',
-          width: '30%',
-          editable: true,
-          config: (index, a) => {
-            return index == 0 ? {
-              component: Input,
-              rules: [{
-                required: true,
-                message: '不能为空'
-              }]
-            } : {}
-          }
-        },
-        {
-          title: 'age',
-          dataIndex: 'age',
-          config: (index) => ({
-            component: Select,
-            options: [
-              {
-                label: '下拉1',
-                value: 1
-              },
-              {
-                label: '下拉2',
-                value: 2
-              }
-            ]
-          })
-        },
-        {
-          title: 'address',
-          dataIndex: 'address',
-        },
-        {
-          title: 'cus',
-          dataIndex: 'cus',
-          config: index => ({
-            component: Radio,
-            options: [
-              {
-                label: '单选1',
-                value: 1
-              },
-              {
-                label: '单选2',
-                value: 2
-              }
-            ]
-          })
-        },
-        {
-          title: "mutil",
-          dataIndex: 'mutil',
-          children: [
-            {
-              title: 'mutilA',
-              dataIndex: 'mutilA',
-              config:index=>({
-                component:Checkbox.Group,
-                options:[
-                  {
-                    label:'多选1',
-                    value:1,
-                  },
-                  {
-                    label:'多选2',
-                    value:2
-                  }
-                ]
-              })
-            },
-            {
-              title: 'mutilB',
-              dataIndex: 'mutilB'
-            }
-          ]
-        }
-      ],
-      dataSource: [
-        {
-          key: '0',
-          name: 'Edward King 0',
-          age: '32',
-          address: 'London, Park Lane no. 0',
-        },
-        {
-          key: '1',
-          name: 'Edward King 1',
-          age: '32',
-          address: 'London, Park Lane no. 1',
-        },
-      ],
-      count: 2,
-    }
-  }
-  render() {
-    const { dataSource, columns } = this.state
-    return <AntdValidateTable ref={this.validateRef} dataSource={dataSource} columns={columns} />
-  }
+import React, { useSate , useRef} from 'react';
+import { Input } from 'antd';
+
+// 定义表单组件
+const CustomComponent = (props)=>{
+  const {value,onChange} = props
+  return <>
+    <Input value={value} onChange={e=>onChange(e.target.value)}></Input>
+    <span>我是自定义组件</span>
+  </>
 }
 
 
+const Demo = (props)=>{
+  const validaRef = useRef()
+  const [table,setTable] = useState([{a:1,b:2}])
+  const columns = [
+    {
+      title:'a',
+      dataIndex:'b',
+      config:(parmas)=>({   // 通过parmas控制每个单元格渲染
+        component:Input,
+        rules:[
+          {
+            required:true,
+            message:'a不能为空'
+          }
+        ]
+      })
+    },
+    {
+      title:'b',
+      dataIndex:'b',
+      config:(parmas)=>({ 
+        component:CustomComponent,
+        rules:[
+          {
+            required:true,
+            message:'b不能为空'
+          }
+        ]
+      })
+    }
+  ]
+  // !!!  validaRef.current  存在 forminstance 外加一个formValue  可完成一系列表单交互操作
+  return <AntdValidateTable ref={validaRef} dataSource={data} columns={columns} />
+  
+}
+
 ```
-
-
 
 ### END
 期待相关功能完善,减少crud的痛苦😖
