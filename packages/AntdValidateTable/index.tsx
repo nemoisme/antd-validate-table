@@ -1,8 +1,8 @@
 import React, { useState, useImperativeHandle, useCallback, forwardRef, useEffect } from 'react';
-import Table from 'antd/lib/table'
-import Form from 'antd/lib/form'
-import 'antd/lib/table/style/index.css'
-import 'antd/lib/form/style/index.css'
+import Table from 'antd/es/table'
+import Form from 'antd/es/form'
+import 'antd/es/table/style/index.css'
+import 'antd/es/form/style/index.css'
 import set from 'lodash.set'
 import { EditableColumn, EleParmas, optionItem, IProps, renderOps } from './type'
 

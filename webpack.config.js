@@ -4,6 +4,7 @@ const env = process.env.NODE_ENV
 const join = dir => path.join(__dirname, dir)
 const isPrd = env === 'production'
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 const devPlugins = [
   new webpack.HotModuleReplacementPlugin(),
@@ -30,7 +31,8 @@ const libExternals = {
     amd: 'react-dom',
     root: 'ReactDOM',
   },
-  'antd': 'antd'
+  'antd': 'antd',
+  'lodash.set':'lodash.set'
 }
 
 module.exports = {
@@ -47,6 +49,7 @@ module.exports = {
     umdNamedDefine: true
   },
   optimization: {
+    minimizer:[new UglifyJsPlugin({test:/\.js(\?.*)?$/i,})],
     usedExports:true
   },
   module: {
@@ -67,6 +70,7 @@ module.exports = {
       {
         enforce: "pre",
         test: /\.js$/,
+        exclude: /node_modules/,
         loader: "source-map-loader"
       }
     ],
