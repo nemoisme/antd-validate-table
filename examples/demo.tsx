@@ -1,5 +1,5 @@
 import React, { Component, useState, useRef } from 'react'
-import AntdValidateTable from './../lib/AntdValidateTable'
+import AntdValidateTable from './../packages/index'
 import { Input, Checkbox, Button, Form } from 'antd'
 
 

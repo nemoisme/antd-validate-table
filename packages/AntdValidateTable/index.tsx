@@ -1,8 +1,6 @@
 import React, { useState, useImperativeHandle, useCallback, forwardRef, useEffect } from 'react';
 import Table from 'antd/es/table'
 import Form from 'antd/es/form'
-import 'antd/es/table/style/index.css'
-import 'antd/es/form/style/index.css'
 import set from 'lodash.set'
 import { EditableColumn, EleParmas, optionItem, IProps, renderOps } from './type'
 import {RENDER_MAP,formateInit,multilColumns} from './shared'
@@ -39,6 +37,7 @@ const renderCell = ({ val, record, rowIndex, col }: EleParmas): JSX.Element => {
         {RenderEle({ val, rowIndex, col, record })}
       </Form.Item>)
 }
+
 
 
 const AntdValidateTable = (props: IProps, ref): JSX.Element => {
