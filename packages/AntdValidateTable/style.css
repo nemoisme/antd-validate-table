@@ -1,0 +1,8 @@
+.antd-validate-table .ant-form-item-has-error .ant-form-item-explain {
+  color: #f5222d;
+}
+
+.antd-validate-table .ant-form-item-has-error .ant-input {
+  background-color: #fff;
+  border-color: #f5222d;
+}

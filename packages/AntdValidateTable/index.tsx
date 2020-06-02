@@ -4,6 +4,8 @@ import Form from 'antd/es/form'
 import set from 'lodash.set'
 import { EditableColumn, EleParmas, optionItem, IProps, renderOps } from './type'
 import {RENDER_MAP,formateInit,multilColumns} from './shared'
+import './style.css'
+
 
 const h = React.createElement
 
@@ -81,6 +83,7 @@ const AntdValidateTable = (props: IProps, ref): JSX.Element => {
 
   return (
     <Form
+      className="antd-validate-table"
       {...formAttrs}
       onValuesChange={fieldChange}
       form={form}
